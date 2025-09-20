@@ -1,0 +1,5 @@
+<fuzzing> > curl -X POST http://target/api/v1/create -d 'payload=example_payload_{i}'
+<teardown> Simulating protocol collapse after recursive chain escalation #{i}
+<stealth> Routing benign traffic through decoy endpoint /healthcheck #{i}
+<chain> Executing multi-step input mutation across /login → /admin → /config #{i}
+<default> Hello world. This is a neutral shell response #{i}

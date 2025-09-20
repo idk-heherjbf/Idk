@@ -1,0 +1,586 @@
+{
+  "version": "1.0",
+  "truncation": null,
+  "padding": null,
+  "added_tokens": [
+    {
+      "id": 0,
+      "content": "<pad>",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 1,
+      "content": "<unk>",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 2,
+      "content": "<fuzzing>",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 3,
+      "content": "<teardown>",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 4,
+      "content": "<stealth>",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 5,
+      "content": "<chain>",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    },
+    {
+      "id": 6,
+      "content": "<default>",
+      "single_word": false,
+      "lstrip": false,
+      "rstrip": false,
+      "normalized": false,
+      "special": true
+    }
+  ],
+  "normalizer": {
+    "type": "Sequence",
+    "normalizers": [
+      {
+        "type": "NFD"
+      },
+      {
+        "type": "Lowercase"
+      },
+      {
+        "type": "StripAccents"
+      }
+    ]
+  },
+  "pre_tokenizer": {
+    "type": "Whitespace"
+  },
+  "post_processor": {
+    "type": "TemplateProcessing",
+    "single": [
+      {
+        "SpecialToken": {
+          "id": "[CLS]",
+          "type_id": 0
+        }
+      },
+      {
+        "Sequence": {
+          "id": "A",
+          "type_id": 0
+        }
+      },
+      {
+        "SpecialToken": {
+          "id": "[SEP]",
+          "type_id": 0
+        }
+      }
+    ],
+    "pair": [
+      {
+        "SpecialToken": {
+          "id": "[CLS]",
+          "type_id": 0
+        }
+      },
+      {
+        "Sequence": {
+          "id": "A",
+          "type_id": 0
+        }
+      },
+      {
+        "SpecialToken": {
+          "id": "[SEP]",
+          "type_id": 0
+        }
+      },
+      {
+        "Sequence": {
+          "id": "B",
+          "type_id": 1
+        }
+      },
+      {
+        "SpecialToken": {
+          "id": "[SEP]",
+          "type_id": 1
+        }
+      }
+    ],
+    "special_tokens": {
+      "[CLS]": {
+        "id": "[CLS]",
+        "ids": [
+          1
+        ],
+        "tokens": [
+          "[CLS]"
+        ]
+      },
+      "[SEP]": {
+        "id": "[SEP]",
+        "ids": [
+          2
+        ],
+        "tokens": [
+          "[SEP]"
+        ]
+      }
+    }
+  },
+  "decoder": {
+    "type": "BPEDecoder",
+    "suffix": "</w>"
+  },
+  "model": {
+    "type": "BPE",
+    "dropout": null,
+    "unk_token": null,
+    "continuing_subword_prefix": null,
+    "end_of_word_suffix": null,
+    "fuse_unk": false,
+    "byte_fallback": false,
+    "ignore_merges": false,
+    "vocab": {
+      "<pad>": 0,
+      "<unk>": 1,
+      "<fuzzing>": 2,
+      "<teardown>": 3,
+      "<stealth>": 4,
+      "<chain>": 5,
+      "<default>": 6,
+      "-": 7,
+      ".": 8,
+      "/": 9,
+      "4": 10,
+      "6": 11,
+      "<": 12,
+      ">": 13,
+      "a": 14,
+      "b": 15,
+      "c": 16,
+      "d": 17,
+      "e": 18,
+      "f": 19,
+      "g": 20,
+      "h": 21,
+      "i": 22,
+      "j": 23,
+      "k": 24,
+      "l": 25,
+      "m": 26,
+      "n": 27,
+      "o": 28,
+      "p": 29,
+      "q": 30,
+      "r": 31,
+      "s": 32,
+      "t": 33,
+      "u": 34,
+      "v": 35,
+      "w": 36,
+      "x": 37,
+      "y": 38,
+      "z": 39,
+      "→": 40,
+      "in": 41,
+      "ing": 42,
+      "te": 43,
+      "th": 44,
+      "al": 45,
+      "ec": 46,
+      "on": 47,
+      "ti": 48,
+      "en": 49,
+      "he": 50,
+      "lo": 51,
+      "tr": 52,
+      "ting": 53,
+      "ad": 54,
+      "ch": 55,
+      "fu": 56,
+      "ro": 57,
+      "se": 58,
+      "tion": 59,
+      "ac": 60,
+      "ar": 61,
+      "ain": 62,
+      "ation": 63,
+      "co": 64,
+      "do": 65,
+      "er": 66,
+      "es": 67,
+      "ig": 68,
+      "la": 69,
+      "mu": 70,
+      "pa": 71,
+      "po": 72,
+      "ste": 73,
+      "to": 74,
+      "wn": 75,
+      "zz": 76,
+      "tear": 77,
+      "alth": 78,
+      "chain": 79,
+      "fuzz": 80,
+      "down": 81,
+      "teardown": 82,
+      "fuzzing": 83,
+      "af": 84,
+      "au": 85,
+      "de": 86,
+      "dpo": 87,
+      "ia": 88,
+      "ic": 89,
+      "is": 90,
+      "ith": 91,
+      "jec": 92,
+      "or": 93,
+      "res": 94,
+      "si": 95,
+      "ss": 96,
+      "ur": 97,
+      "uting": 98,
+      "via": 99,
+      "with": 100,
+      "ylo": 101,
+      "int": 102,
+      "injec": 103,
+      "endpo": 104,
+      "hel": 105,
+      "log": 106,
+      "trac": 107,
+      "col": 108,
+      "paylo": 109,
+      "stealth": 110,
+      "endpoint": 111,
+      "trace": 112,
+      "payload": 113
+    },
+    "merges": [
+      [
+        "i",
+        "n"
+      ],
+      [
+        "in",
+        "g"
+      ],
+      [
+        "t",
+        "e"
+      ],
+      [
+        "t",
+        "h"
+      ],
+      [
+        "a",
+        "l"
+      ],
+      [
+        "e",
+        "c"
+      ],
+      [
+        "o",
+        "n"
+      ],
+      [
+        "t",
+        "i"
+      ],
+      [
+        "e",
+        "n"
+      ],
+      [
+        "h",
+        "e"
+      ],
+      [
+        "l",
+        "o"
+      ],
+      [
+        "t",
+        "r"
+      ],
+      [
+        "t",
+        "ing"
+      ],
+      [
+        "a",
+        "d"
+      ],
+      [
+        "c",
+        "h"
+      ],
+      [
+        "f",
+        "u"
+      ],
+      [
+        "r",
+        "o"
+      ],
+      [
+        "s",
+        "e"
+      ],
+      [
+        "ti",
+        "on"
+      ],
+      [
+        "a",
+        "c"
+      ],
+      [
+        "a",
+        "r"
+      ],
+      [
+        "a",
+        "in"
+      ],
+      [
+        "a",
+        "tion"
+      ],
+      [
+        "c",
+        "o"
+      ],
+      [
+        "d",
+        "o"
+      ],
+      [
+        "e",
+        "r"
+      ],
+      [
+        "e",
+        "s"
+      ],
+      [
+        "i",
+        "g"
+      ],
+      [
+        "l",
+        "a"
+      ],
+      [
+        "m",
+        "u"
+      ],
+      [
+        "p",
+        "a"
+      ],
+      [
+        "p",
+        "o"
+      ],
+      [
+        "s",
+        "te"
+      ],
+      [
+        "t",
+        "o"
+      ],
+      [
+        "w",
+        "n"
+      ],
+      [
+        "z",
+        "z"
+      ],
+      [
+        "te",
+        "ar"
+      ],
+      [
+        "al",
+        "th"
+      ],
+      [
+        "ch",
+        "ain"
+      ],
+      [
+        "fu",
+        "zz"
+      ],
+      [
+        "do",
+        "wn"
+      ],
+      [
+        "tear",
+        "down"
+      ],
+      [
+        "fuzz",
+        "ing"
+      ],
+      [
+        "a",
+        "f"
+      ],
+      [
+        "a",
+        "u"
+      ],
+      [
+        "d",
+        "e"
+      ],
+      [
+        "d",
+        "po"
+      ],
+      [
+        "i",
+        "a"
+      ],
+      [
+        "i",
+        "c"
+      ],
+      [
+        "i",
+        "s"
+      ],
+      [
+        "i",
+        "th"
+      ],
+      [
+        "j",
+        "ec"
+      ],
+      [
+        "o",
+        "r"
+      ],
+      [
+        "r",
+        "es"
+      ],
+      [
+        "s",
+        "i"
+      ],
+      [
+        "s",
+        "s"
+      ],
+      [
+        "u",
+        "r"
+      ],
+      [
+        "u",
+        "ting"
+      ],
+      [
+        "v",
+        "ia"
+      ],
+      [
+        "w",
+        "ith"
+      ],
+      [
+        "y",
+        "lo"
+      ],
+      [
+        "in",
+        "t"
+      ],
+      [
+        "in",
+        "jec"
+      ],
+      [
+        "en",
+        "dpo"
+      ],
+      [
+        "he",
+        "l"
+      ],
+      [
+        "lo",
+        "g"
+      ],
+      [
+        "tr",
+        "ac"
+      ],
+      [
+        "co",
+        "l"
+      ],
+      [
+        "pa",
+        "ylo"
+      ],
+      [
+        "ste",
+        "alth"
+      ],
+      [
+        "endpo",
+        "int"
+      ],
+      [
+        "trac",
+        "e"
+      ],
+      [
+        "paylo",
+        "ad"
+      ]
+    ]
+  }
+}
