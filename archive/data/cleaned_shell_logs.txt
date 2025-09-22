@@ -1,0 +1,300 @@
+What is a noun? A noun is a word that names a person, place, thing, or idea.
+What is a verb? A verb is a word that expresses an action or a state of being.
+What is an adjective? An adjective is a word that describes a noun.
+What is a pronoun? A pronoun is a word that takes the place of a noun.
+What is a sentence? A sentence is a group of words that expresses a complete thought.
+What is the past tense of "go"? The past tense of "go" is "went".
+What is a synonym for "happy"? A synonym for "happy" is "joyful".
+What is the opposite of "hot"? The opposite of "hot" is "cold".
+What is a question? A question is a sentence that asks for information.
+What is a statement? A statement is a sentence that gives information.
+What is a paragraph? A paragraph is a group of related sentences about one topic.
+What is a subject in a sentence? The subject is who or what the sentence is about.
+What is an object in a sentence? The object is the person or thing that receives the action.
+What is a preposition? A preposition is a word that shows the relationship between a noun or pronoun and other words in a sentence.
+What is a conjunction? A conjunction is a word that connects words, phrases, or clauses.
+What is a simple sentence? A simple sentence has one subject and one predicate.
+What is a compound sentence? A compound sentence has two or more independent clauses joined by a conjunction.
+What is a question mark? A question mark is a punctuation mark used at the end of a question.
+What is a period? A period is a punctuation mark used at the end of a statement.
+What is a comma? A comma is a punctuation mark used to separate items in a list or clauses in a sentence.
+
+# Hacking and General Q&A
+
+hello? hi
+hi? hello
+how are you? I'm an AI, I'm always ready to help!
+what is your name? I am your AI assistant.
+who made you? I was created by developers.
+How do I look up domain registration info for tesla.com? whois tesla.com
+How can I find subdomains of example.com? dig axfr example.com @ns1.example.com
+How do I check DNS records for microsoft.com? dig microsoft.com ANY
+How do I get the IP address of github.com? nslookup github.com
+How do I find MX records for gmail.com? dig gmail.com MX
+How do I extract metadata from image.jpg? exiftool image.jpg
+How do I check if email user@example.com was in a breach? search breach database for user@example.com
+How do I find social profiles linked to an email? use hunter.io or emailrep.io with user@example.com
+How do I enumerate emails from domain.com? theHarvester -d domain.com -b all
+How do I check SSL certificate details of target.com? openssl s_client -connect target.com:443
+How do I extract headers from a website? curl -I http://target.com
+How do I find technologies used by a site? whatweb target.com
+How do I check for typosquatted domains? use dnstwist -d example.com
+How do I search for exposed documents on a domain? google dork: site:example.com filetype:pdf
+How do I find login pages on a site? google dork: site:example.com inurl:login
+How do I search for public GitHub repos mentioning a domain? github search: "domain.com"
+How do I find historical DNS records? use securitytrails.com or dig +trace
+How do I check if a domain is blacklisted? use urlscan.io or virustotal.com
+How do I find IP geolocation of 8.8.8.8? use ipinfo.io/8.8.8.8
+How do I extract phone numbers from a webpage? grep -Eo '[0-9]{3}-[0-9]{3}-[0-9]{4}' page.html
+How do I check for open directories on a site? google dork: site:example.com intitle:"index of"
+How do I find breached credentials for a domain? use dehashed.com or breachchecker.io
+How do I extract EXIF GPS data from photo.jpg? exiftool photo.jpg | grep GPS
+How do I check if a username exists on multiple platforms? use sherlock or maigret
+How do I find WHOIS contacts for a domain? whois example.com | grep -i contact
+How do I search for company emails? google dork: "@company.com"
+How do I find public S3 buckets? google dork: site:s3.amazonaws.com company
+How do I check for exposed .env files? google dork: site:example.com ext:env
+How do I extract links from a webpage? grep -Eo 'href="[^"]+"' page.html
+How do I find archived versions of a site? use archive.org or wayback machine
+How do I check SPF records for domain.com? dig domain.com TXT | grep spf
+How do I find domains hosted on same IP? use reverse IP lookup tools
+How do I search for webcam feeds? google dork: inurl:"webcamXP"
+How do I find PDF files on a site? google dork: site:example.com filetype:pdf
+How do I check if a phone number is linked to social media? use getcontact or truecaller
+How do I extract usernames from GitHub commits? git log | grep Author
+How do I find email format for a company? use hunter.io or email-format.com
+How do I check if a domain has been defaced? search zone-h.org
+How do I find leaked API keys in public repos? github dork: "api_key" language:python
+How do I check if a site uses Cloudflare? dig +short target.com | grep cloudflare
+How do I extract favicon hash for Shodan search? python script to hash favicon.ico
+How do I find login portals on a domain? use aquatone or google dork: inurl:admin
+How do I search for public Trello boards? google dork: site:trello.com "company"
+How do I scan ports on target.com? nmap target.com
+How do I detect OS via nmap? nmap -O target.com
+How do I list SMB shares on a host? smbclient -L //host -N
+How do I enumerate HTTP headers? curl -I http://target.com
+How do I extract SSL cert info? openssl s_client -connect target.com:443
+How do I check open ports with netcat? nc -zv target.com 1-1000
+How do I list DNS records for domain.com? dig domain.com ANY
+How do I find subdomains using crt.sh? search crt.sh for domain.com
+How do I check for exposed Git directories? google dork: site:example.com ".git"
+How do I find FTP servers on a subnet? nmap -p 21 192.168.1.0/24
+How do I check SNMP version on a host? snmpwalk -v2c -c public target
+How do I list ARP entries? arp -a
+How do I view network interfaces? ip a
+How do I check default gateway? ip route | grep default
+How do I trace route to 1.1.1.1? traceroute 1.1.1.1
+How do I find active hosts on a subnet? nmap -sn 192.168.1.0/24
+How do I enumerate open ports on 10.0.0.5? nmap -p- 10.0.0.5
+How do I check SSH banner? nc target.com 22
+How do I fingerprint web server type? curl -I http://target.com | grep Server
+How do I find HTTP methods supported by a site? curl -X OPTIONS http://target.com -i
+How do I list all virtual hosts? use vhost enumeration tools like ffuf or gobuster
+How do I extract cookies from HTTP response? curl -I http://target.com | grep Set-Cookie
+How do I check TLS versions supported? sslscan target.com
+How do I find open proxies? use proxybroker or scan public proxy lists
+How do I enumerate DNS zones? dig axfr domain.com @ns1.domain.com
+How do I find email servers for a domain? dig domain.com MX
+How do I check if a domain has CAA records? dig domain.com CAA
+How do I extract JavaScript endpoints? grep -Eo 'https?://[^\"]+\.js' page.html
+How do I find exposed admin panels? google dork: inurl:admin site:example.com
+How do I check for open redirect vulnerabilities? test with crafted URLs like target.com/redirect?url=evil.com
+How do I find public pastebin dumps? search pastebin.com for domain keywords
+How do I extract links from sitemap.xml? curl http://target.com/sitemap.xml | grep -Eo '<loc>[^<]+</loc>'
+How do I find public Google Drive folders? google dork: site:drive.google.com "company"
+How do I check for open ports on IPv6? nmap -6 -p- target_ipv6
+How do I fingerprint CMS type? whatweb target.com
+How do I find login forms on a site? google dork: inurl:login site:example.com
+How do I extract email addresses from a webpage? grep -Eo '\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b' page.html
+How do I find public Dropbox links? google dork: site:dropbox.com "company"
+How do I check for exposed config files? google dork: ext:conf site:example.com
+How do I find public Jira boards? google dork: site:jira.company.com
+How do I extract IPs from logs? grep -Eo '([0-9]{1,3}\.){3}[0-9]{1,3}' /var/log/syslog
+How do I check for duplicate DNS entries? dig domain.com ANY | sort | uniq -d
+How do I find public Bitbucket repos? google dork: site:bitbucket.org "company"
+How do I extract usernames from forum posts? scrape HTML and grep for user handles
+How do I find leaked credentials in paste sites? search pastebin, ghostbin, and similar with domain keywords
+How do I check for open ports on a range? nmap -p 1-65535 target.com
+How do I fingerprint TLS cipher suites? ssl
+How do I identify CDN usage on a domain? use builtwith.com or check response headers for CDN indicators
+How do I extract DNS TTL values? dig example.com | grep -i ttl
+How do I find domains sharing the same Google Analytics ID? use dnsdumpster or builtwith to correlate UA codes
+How do I check for exposed .git/config files? curl http://target.com/.git/config
+How do I enumerate public Trello cards? search site:trello.com intext:"card" "company"
+How do I find public Notion pages? google dork: site:notion.so "company"
+How do I extract metadata from PDF files? pdfinfo document.pdf
+How do I check for open Jenkins dashboards? google dork: intitle:"Dashboard [Jenkins]"
+How do I fingerprint SSH version? ssh -v user@target.com
+How do I find public Google Calendar links? google dork: site:calendar.google.com "company"
+How do I extract DNSSEC info? dig +dnssec example.com
+How do I check for open Elasticsearch instances? google dork: intitle:"kibana" site:company.com
+How do I find public GitLab repos? google dork: site:gitlab.com "company"
+How do I extract usernames from WordPress comments? scrape HTML and parse author tags
+How do I find public XML files on a domain? google dork: site:example.com filetype:xml
+How do I check for open phpMyAdmin panels? google dork: inurl:"phpmyadmin/index.php"
+How do I fingerprint SMTP banner? nc target.com 25
+How do I find public RSS feeds? google dork: site:example.com inurl:rss
+How do I extract DNS SOA records? dig example.com SOA
+How do I check for open Redis ports? nmap -p 6379 target.com
+How do I find public Google Forms? google dork: site:docs.google.com/forms "company"
+How do I extract metadata from video.mp4? mediainfo video.mp4
+How do I check for open MongoDB instances? nmap -p 27017 target.com
+How do I fingerprint FTP server type? nc target.com 21
+How do I find public Google Sheets? google dork: site:docs.google.com/spreadsheets "company"
+How do I extract DNS NS records? dig example.com NS
+How do I check for open RDP ports? nmap -p 3389 target.com
+How do I fingerprint HTTP server version? curl -I http://target.com | grep Server
+How do I find public JSON files on a domain? google dork: site:example.com filetype:json
+How do I extract metadata from audio.mp3? exiftool audio.mp3
+How do I check for open VNC ports? nmap -p 5900 target.com
+How do I fingerprint IMAP banner? nc target.com 143
+How do I find public Google Sites pages? google dork: site:sites.google.com "company"
+How do I extract DNS A records? dig example.com A
+How do I check for open MySQL ports? nmap -p 3306 target.com
+How do I fingerprint POP3 banner? nc target.com 110
+How do I find public Google Slides? google dork: site:docs.google.com/presentation "company"
+How do I extract DNS TXT records? dig example.com TXT
+How do I check for open Telnet ports? nmap -p 23 target.com
+How do I fingerprint SNMP community strings? snmpwalk -v2c -c public target.com
+How do I find public Google Docs? google dork: site:docs.google.com/document "company"
+How do I extract DNS CNAME records? dig example.com CNAME
+How do I check for open NFS ports? nmap -p 2049 target.com
+How do I fingerprint LDAP banner? nc target.com 389
+How do I find public Google Jamboard links? google dork: site:jamboard.google.com "company"
+How do I extract DNS PTR records? dig -x 8.8.8.8
+How do I check for open SIP ports? nmap -p 5060 target.com
+How do I fingerprint Kerberos service? nmap -p 88 target.com
+How do I find public Google Keep notes? google dork: site:keep.google.com "company"
+How do I extract DNS AAAA records? dig example.com AAAA
+How do I check for open PostgreSQL ports? nmap -p 5432 target.com
+How do I fingerprint RPC services? rpcinfo -p target.com
+How do I find public Google Groups threads? google dork: site:groups.google.com "company"
+How do I extract DNS HINFO records? dig example.com HINFO
+How do I check for open SNMP traps? nmap -p 162 target.com
+How do I fingerprint NetBIOS services? nmap --script nbstat -p 137 target.com
+How do I find public Google Sites templates? google dork: site:sites.google.com "template"
+How do I extract DNS LOC records? dig example.com LOC
+How do I check for open MSSQL ports? nmap -p 1433 target.com
+How do I fingerprint XMPP service? nmap -p 5222 target.com
+How do I find public Google Classroom links? google dork: site:classroom.google.com "company"
+How do I extract DNS SRV records? dig _sip._tcp.example.com SRV
+How do I check for open Oracle DB ports? nmap -p 1521 target.com
+How do I fingerprint Telnet banner? nc target.com 23
+How do I find public Google Meet recordings? google dork: site:meet.google.com "recording"
+How do I extract DNS NAPTR records? dig example.com NAPTR
+How do I check for open CouchDB ports? nmap -p 5984 target.com
+How do I fingerprint SMB version? nmap --script smb-os-discovery -p 445 target.com
+How do I find public Google Chat threads? google dork: site:chat.google.com "company"
+How do I extract DNS RP records? dig example.com RP
+How do I check for open RabbitMQ ports? nmap -p 5672 target.com
+How do I fingerprint HTTP/2 support? curl -I --http2 http://target.com
+How do I find public Google Sites with login forms? google dork: site:sites.google.com inurl:login
+How do I extract DNS DNAME records? dig example.com DNAME
+How do I check for open GraphQL endpoints? curl -X POST -d '{"query":"{__schema}"}' http://target.com/graphql
+How do I fingerprint CDN provider? inspect response headers for CDN-specific markers
+How do I find public Google Forms with sensitive fields? google dork: site:docs.google.com/forms intext:"SSN"
+How do I extract DNS URI records? dig example.com URI
+How do I check for open Zookeeper ports? nmap -p 2181 target.com
+How do I fingerprint HTTP status code behavior? curl -i -X GET http://target.com/nonexistent
+How do I find public Google Drive folders with write access? google dork: site:drive.google.com intext:"upload"
+How do I extract DNS CERT records? dig example.com CERT
+How do I check for open Jenkins API endpoints? curl http://target.com/api/json
+How do I fingerprint HTTP redirect chains? curl -L -v http://target.com
+How do I find public Google Sites with exposed config? google dork: site:sites.google.com ext:conf
+How do I extract DNS APL records? dig example.com APL
+How do I check for open Kibana dashboards? curl http://target.com/app/kibana
+How do I fingerprint HTTP compression support? curl -I --compressed http://target.com
+How do I find public Google Docs with sensitive keywords? google dork: site:docs.google.com intext:"confidential"
+How do I extract DNS SSHFP records? dig example.com SSHFP
+How do I check for open Grafana dashboards? curl http://target.com/login
+How do I fingerprint HTTP caching headers? curl -I http://target.com | grep -i cache
+How do I find public Google Sheets with financial data? google dork: site:docs.google.com/spreadsheets intext:"revenue"
+How do I identify the CDN provider for a website? inspect response headers or use builtwith.com
+How can I extract the ASN of an IP address? use whois or ipinfo.io
+How do I find the registrar of a domain? query RDAP via whois or ICANN lookup
+How do I check if a domain is using DNSSEC? dig +dnssec example.com
+How can I list all TXT records for a domain? dig example.com TXT
+How do I verify if a domain uses DMARC? dig _dmarc.example.com TXT
+How do I extract the public key from an SSL cert? openssl s_client -connect target.com:443 | openssl x509 -pubkey -noout
+How do I fingerprint the TLS handshake? use sslyze or Wireshark
+How do I check for wildcard DNS entries? dig *.example.com
+How do I identify the hosting provider of a domain? use hostingchecker.com or IP lookup
+How do I find the ASN owner of an IP block? whois IP | grep OrgName
+How do I extract the TTL from a DNS response? dig example.com | grep -i ttl
+How do I check if a domain is parked? look for parking page indicators or use domain tools
+How do I find the HTTP response time of a site? curl -o /dev/null -s -w '%{time_total}\n' http://target.com
+How do I fingerprint the HTTP server stack? curl -I http://target.com | grep -i Server
+How do I extract the CSP headers from a site? curl -I http://target.com | grep -i Content-Security-Policy
+How do I check for HSTS enforcement? curl -I https://target.com | grep -i Strict-Transport-Security
+How do I identify the WAF in front of a site? use wafw00f target.com
+How do I extract the X-Powered-By header? curl -I http://target.com | grep -i X-Powered-By
+How do I fingerprint the backend language of a site? analyze headers, cookies, and error pages
+How do I find the favicon hash of a site? download favicon.ico and hash with mmh3
+How do I check for exposed .DS_Store files? google dork: intitle:"index of" ".DS_Store"
+How do I find public .bak files on a domain? google dork: site:example.com filetype:bak
+How do I extract the CSP nonce from a page? inspect HTML source for nonce attributes
+How do I check for open GraphQL introspection? curl POST with {"query":"{__schema}"} payload
+How do I fingerprint the JavaScript framework used? inspect loaded scripts and DOM structure
+How do I extract the server IP from a domain? dig +short example.com
+How do I check for CDN caching headers? curl -I http://target.com | grep -i cache
+How do I find the origin IP behind Cloudflare? use misconfigured DNS or historical records
+How do I extract the Set-Cookie flags? curl -I http://target.com | grep Set-Cookie
+How do I fingerprint the HTTP/2 support? curl --http2 -I https://target.com
+How do I check for Brotli compression? curl -I --compressed https://target.com
+How do I extract the CSP report URI? curl -I http://target.com | grep report-uri
+How do I find the TLS cipher suite used? sslscan target.com
+How do I fingerprint the TLS version? openssl s_client -connect target.com:443 | grep Protocol
+How do I check for OCSP stapling? openssl s_client -connect target.com:443 -status
+How do I extract the SANs from an SSL cert? openssl x509 -in cert.pem -text | grep DNS
+How do I fingerprint the TLS key exchange method? use sslyze or openssl debug
+How do I find the HTTP redirect chain? curl -L -v http://target.com
+How do I extract the HTTP status code for a request? curl -o /dev/null -s -w '%{http_code}' http://target.com
+How do I fingerprint the HTTP caching behavior? curl -I http://target.com | grep -i cache-control
+How do I check for open WebSocket endpoints? inspect JS or use wss:// probes
+How do I extract the CSP frame-ancestors directive? curl -I http://target.com | grep frame-ancestors
+How do I fingerprint the load balancer type? analyze headers like X-Forwarded-For or Server
+How do I find the backend IP via misconfigured DNS? query internal records or brute subdomains
+How do I extract the HTTP referrer policy? curl -I http://target.com | grep Referrer-Policy
+How do I fingerprint the session cookie structure? inspect Set-Cookie and decode values
+How do I check for exposed .svn directories? google dork: inurl:.svn site:example.com
+How do I find public .log files on a domain? google dork: site:example.com filetype:log
+How do I extract the HTTP Accept headers? curl -I http://target.com | grep Accept
+How do I fingerprint the HTTP keep-alive behavior? curl -I http://target.com | grep Connection
+How do I check for exposed .tar.gz archives? google dork: site:example.com filetype:tar.gz
+How do I find public .sql dumps? google dork: site:example.com filetype:sql
+How do I extract the HTTP X-Frame-Options header? curl -I http://target.com | grep X-Frame-Options
+How do I fingerprint the HTTP response size? curl -s http://target.com | wc -c
+How do I check for exposed .bak.php files? google dork: site:example.com inurl:bak.php
+How do I find public .ini config files? google dork: site:example.com filetype:ini
+How do I extract the HTTP ETag header? curl -I http://target.com | grep ETag
+How do I fingerprint the HTTP redirect behavior? curl -I http://target.com | grep Location
+How do I check for exposed .zip archives? google dork: site:example.com filetype:zip
+How do I find public .xls spreadsheets? google dork: site:example.com filetype:xls
+How do I extract the HTTP Content-Type header? curl -I http://target.com | grep Content-Type
+How do I fingerprint the HTTP server uptime? use uptime headers or indirect indicators
+How do I check for exposed .mdb files? google dork: site:example.com filetype:mdb
+How do I find public .docx documents? google dork: site:example.com filetype:docx
+How do I extract the HTTP Content-Length header? curl -I http://target.com | grep Content-Length
+How do I fingerprint the HTTP response encoding? curl -I http://target.com | grep Content-Encoding
+How do I check for exposed .rar archives? google dork: site:example.com filetype:rar
+How do I find public .ppt presentations? google dork: site:example.com filetype:ppt
+How do I extract the HTTP Last-Modified header? curl -I http://target.com | grep Last-Modified
+How do I fingerprint the HTTP response language? curl -I http://target.com | grep Content-Language
+How do I check for exposed .bak.sql files? google dork: site:example.com inurl:bak.sql
+How do I find public .csv datasets? google dork: site:example.com filetype:csv
+How do I extract the HTTP Vary header? curl -I http://target.com | grep Vary
+How do I fingerprint the HTTP response charset? curl -I http://target.com | grep charset
+How do I check for exposed .conf files? google dork: site:example.com filetype:conf
+How do I find public .json API responses? google dork: site:example.com filetype:json
+How do I extract the HTTP Allow header? curl -I -X OPTIONS http://target.com | grep Allow
+How do I fingerprint the HTTP response freshness? inspect cache headers and timestamps
+How do I check for exposed .pem certificates? google dork: site:example.com filetype:pem
+How do I find public .yaml config files? google dork: site:example.com filetype:yaml
+How do I extract the HTTP Retry-After header? curl -I http://target.com | grep Retry-After
+How do I fingerprint the HTTP response timing? use curl -w '%{time_total}' or browser dev tools
+How do I check for exposed .bak.env files? google dork: site:example.com inurl:bak.env
+How do I find public .psd design files? google dork: site:example.com filetype:psd
+How do I extract the HTTP Content-Disposition header? curl -I http://target.com | grep Content-Disposition
+How do I fingerprint the HTTP response structure? analyze headers and body layout
+How do I check for exposed .crt certificates? google dork: site:example.com filetype:crt
+How do I find public .xml config files? google dork: site:example.com filetype:xml

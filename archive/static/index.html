@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Trainer Web UI</title>
+    <style>
+        body { font-family: sans-serif; margin: 2em; }
+        button { margin: 0.5em 0; padding: 0.5em 1em; }
+        pre { background: #f4f4f4; padding: 1em; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>AI Trainer Web UI</h1>
+    <button onclick="train()">Train Model</button>
+    <input id="userInput" type="text" placeholder="Type your prompt here..." style="width:60%" />
+    <button onclick="test()">Test Model</button>
+    <button onclick="reload()">Reload Model</button>
+    <h2>Output</h2>
+    <pre id="output"></pre>
+    <script>
+        async function train() {
+            setOutput('Training...');
+            const eventSource = new EventSource('/train');
+            eventSource.onmessage = function(event) {
+                if (event.data) {
+                    setOutput(document.getElementById('output').textContent + '\n' + event.data);
+                }
+            };
+            eventSource.onerror = function() {
+                setOutput(document.getElementById('output').textContent + '\n[Training finished or error occurred]');
+                eventSource.close();
+            };
+        }
+        async function test() {
+            setOutput('Testing...');
+            const input = document.getElementById('userInput').value;
+            const res = await fetch('/test', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({input})
+            });
+            const data = await res.json();
+            setOutput(JSON.stringify(data, null, 2));
+        }
+        async function reload() {
+            setOutput('Reloading...');
+            const res = await fetch('/reload', {method: 'POST'});
+            const data = await res.json();
+            setOutput(JSON.stringify(data, null, 2));
+        }
+        function setOutput(txt) {
+            document.getElementById('output').textContent = txt;
+        }
+    </script>
+</body>
+</html>

@@ -1,72 +1,22 @@
 {
-  "version": "1.0",
-  "truncation": null,
-  "padding": null,
   "added_tokens": [
-    {
-      "id": 0,
-      "content": "<pad>",
-      "single_word": false,
-      "lstrip": false,
-      "rstrip": false,
-      "normalized": false,
-      "special": true
-    },
-    {
-      "id": 1,
-      "content": "<unk>",
-      "single_word": false,
-      "lstrip": false,
-      "rstrip": false,
-      "normalized": false,
-      "special": true
-    },
-    {
-      "id": 2,
-      "content": "<fuzzing>",
-      "single_word": false,
-      "lstrip": false,
-      "rstrip": false,
-      "normalized": false,
-      "special": true
-    },
-    {
-      "id": 3,
-      "content": "<teardown>",
-      "single_word": false,
-      "lstrip": false,
-      "rstrip": false,
-      "normalized": false,
-      "special": true
-    },
-    {
-      "id": 4,
-      "content": "<stealth>",
-      "single_word": false,
-      "lstrip": false,
-      "rstrip": false,
-      "normalized": false,
-      "special": true
-    },
-    {
-      "id": 5,
-      "content": "<chain>",
-      "single_word": false,
-      "lstrip": false,
-      "rstrip": false,
-      "normalized": false,
-      "special": true
-    },
-    {
-      "id": 6,
-      "content": "<default>",
-      "single_word": false,
-      "lstrip": false,
-      "rstrip": false,
-      "normalized": false,
-      "special": true
-    }
+    { "id": 0, "special": true, "content": "<pad>" },
+    { "id": 1, "special": true, "content": "<unk>" },
+    { "id": 2, "special": true, "content": "<fuzzing>" },
+    { "id": 3, "special": true, "content": "<teardown>" },
+    { "id": 4, "special": true, "content": "<stealth>" },
+    { "id": 5, "special": true, "content": "<chain>" },
+    { "id": 6, "special": true, "content": "<default>" },
+    { "id": 7, "special": true, "content": "<bos>" },
+    { "id": 8, "special": true, "content": "<eos>" }
   ],
+  "special_tokens": {
+    "pad_token": "<pad>",
+    "unk_token": "<unk>",
+    "bos_token": "<bos>",
+    "eos_token": "<eos>"
+  },
+  
   "normalizer": {
     "type": "Sequence",
     "normalizers": [
@@ -164,14 +114,15 @@
     "suffix": "</w>"
   },
   "model": {
-    "type": "BPE",
-    "dropout": null,
-    "unk_token": null,
-    "continuing_subword_prefix": null,
-    "end_of_word_suffix": null,
-    "fuse_unk": false,
-    "byte_fallback": false,
-    "ignore_merges": false,
+  "type": "BPE",
+  "dropout": null,
+  "unk_token": "<unk>",
+  "continuing_subword_prefix": null,
+  "single_word": false,
+  "end_of_word_suffix": null,
+  "fuse_unk": false,
+  "byte_fallback": false,
+  "ignore_merges": false,
     "vocab": {
       "<pad>": 0,
       "<unk>": 1,
