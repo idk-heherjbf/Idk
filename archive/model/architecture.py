@@ -18,7 +18,7 @@ class PositionalEncoding(nn.Module):
 
 # Custom Seq2Seq Transformer for Q&A
 class Seq2SeqTransformer(nn.Module):
-    def __init__(self, vocab_size, d_model=256, nhead=8, num_encoder_layers=4, num_decoder_layers=4, dropout=0.3):
+    def __init__(self, vocab_size, d_model=512, nhead=8, num_encoder_layers=4, num_decoder_layers=4, dropout=0.1):
         super().__init__()
         self.d_model = d_model
         self.embedding = nn.Embedding(vocab_size, d_model)

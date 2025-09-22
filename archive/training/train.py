@@ -12,7 +12,6 @@ from torch.nn.functional import log_softmax
 import sqlite3
 import json
 from model.architecture import Seq2SeqTransformer
-from tokenizers import BertWordPieceTokenizer
 from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 
 
@@ -41,10 +40,15 @@ corpus_path = os.path.join(tokenizer_path, "corpus.txt")
 with open(corpus_path, "w", encoding="utf-8") as f:
     for t in texts:
         f.write(t + "\n")
-tokenizer = BertWordPieceTokenizer(lowercase=True)
-tokenizer.train([corpus_path], vocab_size=300, special_tokens=special_tokens)
-tokenizer.save_model(tokenizer_path)
-tokenizer.add_special_tokens(special_tokens)
+from tokenizers import Tokenizer
+import os
+tokenizer_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../tokenizer/tokenizer.json'))
+print(f"Loading tokenizer from: {tokenizer_path}")
+tokenizer = Tokenizer.from_file(tokenizer_path)
+# Add special tokens if not present
+for tok in special_tokens:
+    if tokenizer.token_to_id(tok) is None:
+        tokenizer.add_special_tokens([tok])
 vocab_size = tokenizer.get_vocab_size()
 
 
@@ -55,12 +59,12 @@ DATA_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../data/cle
 
 
 # Hyperparameters
-BATC_SIZE = 32
-SRC_SEQ_LEN = 64  # question length
-TGT_SEQ_LEN = 64  # answer length
+BATC_SIZE = 8
+SRC_SEQ_LEN = 48  # question length
+TGT_SEQ_LEN = 48  # answer length
 EPOCHS = 30
 LR = 1e-4
-MODEL_DIM = 256
+MODEL_DIM = 512
 NHEAD = 8
 
 

