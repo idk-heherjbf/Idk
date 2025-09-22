@@ -15,12 +15,40 @@ from archive.tokenizer.simple_tokenizer import SimpleTokenizer
 app = FastAPI()
 # ...existing code...
 
-# Greedy decoding for seq2seq Q&A
-def generate_answer(question, max_len=64):
+
+# Nucleus sampling for seq2seq Q&A with parameter replacement
+import re
+import numpy as np
+def extract_target(text):
+    # Extract IP or domain from user input (simple regex)
+    ip_match = re.search(r"(\d{1,3}(?:\.\d{1,3}){3})", text)
+    if ip_match:
+        return ip_match.group(1)
+    domain_match = re.search(r"([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})", text)
+    if domain_match:
+        return domain_match.group(1)
+    return None
+
+def nucleus_sample(probs, p=0.9):
+    sorted_indices = np.argsort(probs)[::-1]
+    sorted_probs = probs[sorted_indices]
+    cumulative_probs = np.cumsum(sorted_probs)
+    cutoff = np.searchsorted(cumulative_probs, p)
+    filtered_indices = sorted_indices[:cutoff+1]
+    filtered_probs = probs[filtered_indices]
+    filtered_probs /= filtered_probs.sum()
+    return np.random.choice(filtered_indices, p=filtered_probs)
+
+def generate_answer(question, max_len=64, nucleus_p=0.9):
     if model is None or tokenizer is None:
         raise RuntimeError("Model or tokenizer not loaded. Please train first.")
     model.eval()
-    q_ids = tokenizer.encode(question)[:63]
+    # Parameter replacement: extract <target> from user input
+    target = extract_target(question)
+    q = question
+    if target:
+        q = re.sub(r"<target>", target, question)
+    q_ids = tokenizer.encode(q)[:63]
     q_ids += [tokenizer.token_to_id("<pad>")] * (64 - len(q_ids))
     src = torch.tensor([q_ids], dtype=torch.long).to(device)
     bos_id = tokenizer.token_to_id("<bos>")
@@ -28,21 +56,13 @@ def generate_answer(question, max_len=64):
     pad_id = tokenizer.token_to_id("<pad>")
     tgt = torch.tensor([[bos_id]], dtype=torch.long).to(device)
     output_ids = []
-    last_token = None
-    repeat_count = 0
     for _ in range(max_len):
         with torch.no_grad():
             logits = model(src, tgt)
-            next_token = torch.argmax(logits[0, -1], dim=-1).item()
-        # Repetition check
-        if next_token == last_token:
-            repeat_count += 1
-        else:
-            repeat_count = 0
-        last_token = next_token
-        if repeat_count > 10:
-            print("[DIAG] Stopping generation due to repetition.")
-            break
+            logits = logits[0, -1].cpu().numpy()
+            probs = np.exp(logits - np.max(logits))
+            probs = probs / probs.sum()
+            next_token = nucleus_sample(probs, p=nucleus_p)
         if next_token == eos_id or next_token == pad_id:
             break
         output_ids.append(next_token)

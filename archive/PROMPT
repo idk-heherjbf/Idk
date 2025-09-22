@@ -2,3 +2,10 @@ Fix Training Data: Replace the grammar examples in cleaned_shell_logs.txt with a
 Upgrade Tokenizer: Switch to a proper subword tokenizer that can handle technical terms and parameters
 Increase Model Size: Your current 256-dim model is too small - try 512+ dimensions
 Add Command Templates: Create structured templates for different pentesting tools
+
+PROMPT 2:
+
+1. Fix the generation function (highest impact):
+Replace your generate_answer with nucleus sampling instead of greedy decoding.
+2. Add parameter replacement:
+Extract IPs/domains from user input and replace the <target> placeholders.
