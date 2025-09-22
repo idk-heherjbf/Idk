@@ -1,0 +1,5 @@
+# Ignore model weights and other large files
+archive/model/model.pt
+*.pt
+*.pth
+*.ckpt
