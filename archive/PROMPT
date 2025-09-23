@@ -1,11 +1,299 @@
-Fix Training Data: Replace the grammar examples in cleaned_shell_logs.txt with actual pentesting command pairs
-Upgrade Tokenizer: Switch to a proper subword tokenizer that can handle technical terms and parameters
-Increase Model Size: Your current 256-dim model is too small - try 512+ dimensions
-Add Command Templates: Create structured templates for different pentesting tools
+CODE TO REPLACE TRAIN.PY WITH:
+import sys
+import os
+import hashlib
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-PROMPT 2:
+import torch
+import torch.nn as nn
+from torch.utils.data import Dataset, DataLoader
+from torch.optim.lr_scheduler import ReduceLROnPlateau
+import sqlite3
+import json
+from model.architecture import Seq2SeqTransformer
+from tokenizer.simple_tokenizer import SimpleTokenizer
 
-1. Fix the generation function (highest impact):
-Replace your generate_answer with nucleus sampling instead of greedy decoding.
-2. Add parameter replacement:
-Extract IPs/domains from user input and replace the <target> placeholders.
+# Paths
+DATA_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../data/cleaned_shell_logs.txt"))
+MODEL_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../model/model.pt"))
+META_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../model/model_meta.json"))
+
+# Initialize tokenizer (simpler approach)
+special_tokens = ["<pad>", "<unk>", "<bos>", "<eos>"]
+tokenizer = SimpleTokenizer(special_tokens=special_tokens)
+
+# Build vocabulary from training data
+texts = []
+with open(DATA_PATH, "r", encoding="utf-8") as f:
+    for line in f:
+        line = line.strip()
+        if not line or line.startswith("#"): 
+            continue
+        if "?" in line and "?" != line[0]:
+            parts = line.split("?", 1)
+            question = parts[0].strip() + "?"
+            answer = parts[1].strip()
+            if answer.startswith("A ") or answer.startswith("a "):
+                answer = answer[2:].strip()
+            if answer:
+                texts.append(question)
+                texts.append(answer)
+
+tokenizer.build_vocab(texts)
+vocab_size = tokenizer.get_vocab_size()
+
+# Reduced hyperparameters for better training
+BATCH_SIZE = 4  # Smaller batch size
+SRC_SEQ_LEN = 32  # Shorter sequences
+TGT_SEQ_LEN = 32
+EPOCHS = 50
+LR = 5e-4  # Higher learning rate
+MODEL_DIM = 256  # Smaller model
+NHEAD = 8
+NUM_LAYERS = 3  # Fewer layers
+
+# SQLite setup
+MEMORY_DB_PATH = os.path.join(os.path.dirname(__file__), "../memory/training_trace.db")
+MEMORY_DB_PATH = os.path.abspath(MEMORY_DB_PATH)
+os.makedirs(os.path.dirname(MEMORY_DB_PATH), exist_ok=True)
+conn = sqlite3.connect(MEMORY_DB_PATH)
+cursor = conn.cursor()
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS trace (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    epoch INTEGER,
+    batch_idx INTEGER,
+    loss REAL,
+    accuracy REAL,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+)
+""")
+conn.commit()
+
+class QADataset(Dataset):
+    def __init__(self, path):
+        self.samples = []
+        bos_id = tokenizer.token_to_id("<bos>")
+        eos_id = tokenizer.token_to_id("<eos>")
+        pad_id = tokenizer.token_to_id("<pad>")
+        
+        with open(path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#"): 
+                    continue
+                if "?" in line and "?" != line[0]:
+                    parts = line.split("?", 1)
+                    question = parts[0].strip() + "?"
+                    answer = parts[1].strip()
+                    if answer.startswith("A ") or answer.startswith("a "):
+                        answer = answer[2:].strip()
+                    if answer:
+                        # Encode with length limits
+                        q_ids = tokenizer.encode(question)[:SRC_SEQ_LEN-1]
+                        a_ids = tokenizer.encode(answer)[:TGT_SEQ_LEN-2]
+                        
+                        # Add special tokens
+                        a_ids = [bos_id] + a_ids + [eos_id]
+                        
+                        # Pad sequences
+                        q_ids += [pad_id] * (SRC_SEQ_LEN - len(q_ids))
+                        a_ids += [pad_id] * (TGT_SEQ_LEN - len(a_ids))
+                        
+                        self.samples.append((q_ids, a_ids))
+
+    def __len__(self):
+        return len(self.samples)
+
+    def __getitem__(self, idx):
+        src, tgt = self.samples[idx]
+        return torch.tensor(src, dtype=torch.long), torch.tensor(tgt, dtype=torch.long)
+
+def hash_file(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        while True:
+            chunk = f.read(8192)
+            if not chunk:
+                break
+            h.update(chunk)
+    return h.hexdigest()
+
+# Model setup
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(f"Using device: {device}")
+print(f"Vocabulary size: {vocab_size}")
+
+model = Seq2SeqTransformer(
+    vocab_size, 
+    d_model=MODEL_DIM, 
+    nhead=NHEAD, 
+    num_encoder_layers=NUM_LAYERS,
+    num_decoder_layers=NUM_LAYERS,
+    dropout=0.1
+).to(device)
+
+# Initialize weights properly
+def init_weights(m):
+    if isinstance(m, nn.Linear):
+        torch.nn.init.xavier_uniform_(m.weight)
+        if m.bias is not None:
+            torch.nn.init.zeros_(m.bias)
+    elif isinstance(m, nn.Embedding):
+        torch.nn.init.normal_(m.weight, 0, 0.1)
+
+model.apply(init_weights)
+
+optimizer = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=1e-3)
+scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=5, verbose=True)
+
+pad_id = tokenizer.token_to_id("<pad>")
+criterion = nn.CrossEntropyLoss(ignore_index=pad_id)
+
+# Check for existing model
+train_data_hash = hash_file(DATA_PATH)
+model_exists = os.path.exists(MODEL_PATH) and os.path.exists(META_PATH)
+should_train = True
+
+if model_exists:
+    try:
+        with open(META_PATH, "r") as f:
+            meta = json.load(f)
+        if meta.get("train_data_hash") == train_data_hash:
+            model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
+            print("Loaded trained model from disk. Skipping retraining.")
+            should_train = False
+        else:
+            print("Training data changed. Retraining model.")
+    except Exception as e:
+        print(f"Error loading model: {e}. Retraining.")
+        should_train = True
+
+if should_train:
+    from torch.utils.data import random_split
+    
+    dataset = QADataset(DATA_PATH)
+    print(f"Dataset size: {len(dataset)}")
+    
+    if len(dataset) == 0:
+        print("ERROR: No valid training samples found!")
+        sys.exit(1)
+    
+    # Split dataset
+    val_size = max(1, int(0.1 * len(dataset)))
+    train_size = len(dataset) - val_size
+    train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
+    
+    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+    val_loader = DataLoader(val_dataset, batch_size=BATCH_SIZE)
+    
+    print(f"Training samples: {len(train_dataset)}, Validation samples: {len(val_dataset)}")
+
+    best_val_loss = float('inf')
+    
+    for epoch in range(EPOCHS):
+        print(f"\n=== Epoch {epoch+1}/{EPOCHS} ===")
+        
+        # Training
+        model.train()
+        total_train_loss = 0
+        total_correct = 0
+        total_tokens = 0
+        
+        for batch_idx, (src, tgt) in enumerate(train_loader):
+            src, tgt = src.to(device), tgt.to(device)
+            
+            # Prepare teacher forcing inputs
+            tgt_input = tgt[:, :-1]  # Remove last token for input
+            tgt_output = tgt[:, 1:]  # Remove first token for target
+            
+            optimizer.zero_grad()
+            
+            # Forward pass
+            logits = model(src, tgt_input)
+            
+            # Calculate loss
+            loss = criterion(logits.reshape(-1, vocab_size), tgt_output.reshape(-1))
+            
+            # Backward pass
+            loss.backward()
+            
+            # Gradient clipping
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
+            
+            optimizer.step()
+            
+            # Calculate accuracy
+            preds = torch.argmax(logits, dim=-1)
+            mask = tgt_output != pad_id
+            correct = ((preds == tgt_output) & mask).sum().item()
+            tokens = mask.sum().item()
+            
+            total_train_loss += loss.item()
+            total_correct += correct
+            total_tokens += tokens
+            
+            if batch_idx % 10 == 0:
+                accuracy = correct / max(1, tokens)
+                print(f"Batch {batch_idx}/{len(train_loader)} - Loss: {loss.item():.4f}, Acc: {accuracy:.4f}")
+                
+                # Log to database
+                cursor.execute(
+                    "INSERT INTO trace (epoch, batch_idx, loss, accuracy) VALUES (?, ?, ?, ?)",
+                    (epoch + 1, batch_idx, loss.item(), accuracy)
+                )
+                conn.commit()
+        
+        avg_train_loss = total_train_loss / len(train_loader)
+        avg_train_acc = total_correct / max(1, total_tokens)
+        
+        # Validation
+        model.eval()
+        total_val_loss = 0
+        val_correct = 0
+        val_tokens = 0
+        
+        with torch.no_grad():
+            for src, tgt in val_loader:
+                src, tgt = src.to(device), tgt.to(device)
+                tgt_input = tgt[:, :-1]
+                tgt_output = tgt[:, 1:]
+                
+                logits = model(src, tgt_input)
+                loss = criterion(logits.reshape(-1, vocab_size), tgt_output.reshape(-1))
+                
+                preds = torch.argmax(logits, dim=-1)
+                mask = tgt_output != pad_id
+                correct = ((preds == tgt_output) & mask).sum().item()
+                tokens = mask.sum().item()
+                
+                total_val_loss += loss.item()
+                val_correct += correct
+                val_tokens += tokens
+        
+        avg_val_loss = total_val_loss / max(1, len(val_loader))
+        avg_val_acc = val_correct / max(1, val_tokens)
+        
+        print(f"Epoch {epoch+1} - Train Loss: {avg_train_loss:.4f}, Train Acc: {avg_train_acc:.4f}")
+        print(f"Epoch {epoch+1} - Val Loss: {avg_val_loss:.4f}, Val Acc: {avg_val_acc:.4f}")
+        
+        # Learning rate scheduling
+        scheduler.step(avg_val_loss)
+        
+        # Save best model
+        if avg_val_loss < best_val_loss:
+            best_val_loss = avg_val_loss
+            os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
+            torch.save(model.state_dict(), MODEL_PATH)
+            with open(META_PATH, "w") as f:
+                json.dump({
+                    "train_data_hash": train_data_hash,
+                    "vocab_size": vocab_size,
+                    "model_dim": MODEL_DIM,
+                    "best_val_loss": best_val_loss
+                }, f)
+            print(f"New best model saved! Val loss: {best_val_loss:.4f}")
+    
+    print(f"\nTraining complete. Best validation loss: {best_val_loss:.4f}")
+
+conn.close()
